@@ -4,3 +4,9 @@
 	var lib = new google.translate.TranslateService();lib.translatePage('ja', 'en', function () {});
 }
 </script>
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'ja', 
+    layout: google.translate.TranslateElement.FloatPosition.TOP_LEFT
+  }, 'google_translate_element');
+}
