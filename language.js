@@ -1,12 +1,6 @@
-<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-<!--<script type="text/javascript">
+<script type="5fe60adbb9169779878bb12e-text/javascript">
 	function gtElInit(){
 	var lib = new google.translate.TranslateService();lib.translatePage('ja', 'en', function () {});
 }
 </script>
-function googleTranslateElementInit() {
-  new google.translate.TranslateElement({
-    pageLanguage: 'ja', 
-    layout: google.translate.TranslateElement.FloatPosition.TOP_LEFT
-  }, 'google_translate_element');
-}
+<script src="https://translate.google.com/translate_a/element.js?cb=gtElInit&amp;hl=ja&amp;client=wt&amp;te=pod" type="5fe60adbb9169779878bb12e-text/javascript"></script>
