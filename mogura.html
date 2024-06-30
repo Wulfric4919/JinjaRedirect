@@ -99,22 +99,11 @@ function countStart(){
     if(count > 1){  //countが1より大きければ
       count --;  //countを1減らす
 
-      if(count == 25) {  //残り時間が25秒の時
+      if(count == 25) {  //残り時間が50秒の時
         mogra2nd = setInterval(function(){
           mogStart(mogSelect(), 600);    //0.6秒で動くモグラを1秒毎に出現させる
         }, 1000);
       }
-      if(count == 20) {  //残り時間が20秒の時
-        mogra3th = setInterval(function(){
-          mogStart(mogSelect(), 600);    //0.6秒で動くモグラを1秒毎に出現させる
-        }, 1000);
-      }
-      if(count == 15) {  //残り時間が15秒の時
-        mogra4th = setInterval(function(){
-          mogStart(mogSelect(), 600);    //0.6秒で動くモグラを1秒毎に出現させる
-        }, 1000);
-      }
-
     } else {
       count = 0;  //残り時間がなくなった場合
       clearInterval(countId);  //カウントダウンのsetIntervalを解除して止める
