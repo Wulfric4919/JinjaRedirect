@@ -41,15 +41,15 @@ display:flex;
 flex-wrap:wrap;
 }
 #stage div{
-width:200px;
-height:200px;
+width:1000px;
+height:1000px;
 background:url(http://noth.wikidot.com/local--files/blog:_start/mogura.webp) no-repeat;
 }
 
 #gameover{
 padding-top:250px;
-width:600px;
-height:600px;
+width:1000px;
+height:1000px;
 position:absolute;
 top:0;
 left:calc(50% - 300px);
@@ -61,8 +61,8 @@ box-sizing:border-box;
 }
 button{
 padding-top:250px;
-width:600px;
-height:600px;
+width:1000px;
+height:1000px;
 background-color:rgba(255,255,255,.7);
 position:absolute;
 top:0;
