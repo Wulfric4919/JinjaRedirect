@@ -50,7 +50,6 @@ background:url(http://noth.wikidot.com/local--files/blog:_start/mogura.webp) no-
 padding-top:250px;
 width:600px;
 height:600px;
-background-color:rgba(255,255,255,.7);
 position:absolute;
 top:0;
 left:calc(50% - 300px);
@@ -64,6 +63,7 @@ button{
 padding-top:250px;
 width:600px;
 height:600px;
+background-color:rgba(255,255,255,.7);
 position:absolute;
 top:0;
 left:calc(50% - 300px);
