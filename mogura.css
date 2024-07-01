@@ -48,8 +48,8 @@ background:url(http://noth.wikidot.com/local--files/blog:_start/mogura.webp) no-
 
 #gameover{
 padding-top:250px;
-width:600px;
-height:600px;
+width:1000px;
+height:1000px;
 position:absolute;
 top:0;
 left:calc(50% - 300px);
@@ -59,8 +59,8 @@ color:#f69;
 }
 button{
 padding-top:250px;
-width:600px;
-height:600px;
+width:1000px;
+height:1000px;
 background-color:rgba(255,255,255,.7);
 position:absolute;
 top:0;
