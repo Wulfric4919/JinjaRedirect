@@ -20,7 +20,9 @@
 <div></div>
 <div></div>
 </div>
-<div id="gameover">START</div>
+<div id="gameover">
+<button id="btn-play">START</button>
+</div>
 <div id="info">残り時間:<span id="count">60</span>　　スコア:<span id="score">0</span></div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script>
@@ -128,20 +130,20 @@ $("#gameover").click(function(){  //#gameoverをクリックした時
   }
 })
 
-const music = document.querySelector("#music");
-const btnStart = document.querySelector $("#gameover");
-btnStart.addEventListener("click", () => {
-music.play();
-});
-
 // 音楽ファイルを取得
 const music = document.querySelector("#music");
 // 再生ボタンを取得
-const btnStart = document.querySelector $("#gameover");
+const btnStart = document.querySelector("#btn-play");
+// 停止ボタンを取得
+const btnStop = document.querySelector("#btn-stop");
 
 btnStart.addEventListener("click", () => {
 // play関数で音楽の再生
 music.play();
+});
+btnStop.addEventListener("click", () => {
+　// pause関数で音楽の一時停止
+music.pause();
 });
 </script>
 </body>
