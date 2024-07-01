@@ -41,8 +41,8 @@ display:flex;
 flex-wrap:wrap;
 }
 #stage div{
-width:200px;
-height:200px;
+width:600px;
+height:600px;
 background:url(http://noth.wikidot.com/local--files/blog:_start/mogura.webp) no-repeat;
 }
 
