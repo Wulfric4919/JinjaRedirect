@@ -8,6 +8,9 @@
 <body>
 <div id="stage">
 <div></div>
+<div>
+<audio src="http://noth.wikidot.com/local--files/blog:_start/iwashiro_habakiri_tsukai.mp3" loop controls id="music"></audio>
+</div>
 <div></div>
 <div></div>
 <div></div>
@@ -125,6 +128,21 @@ $("#gameover").click(function(){  //#gameoverをクリックした時
   }
 })
 
+const music = document.querySelector("#music");
+const btnStart = document.querySelector("#gameover");
+btnStart.addEventListener("click", () => {
+music.play();
+});
+
+// 音楽ファイルを取得
+const music = document.querySelector("#music");
+// 再生ボタンを取得
+const btnStart = document.querySelector("#gameover");
+
+btnStart.addEventListener("click", () => {
+// play関数で音楽の再生
+music.play();
+});
 </script>
 </body>
 </html>
