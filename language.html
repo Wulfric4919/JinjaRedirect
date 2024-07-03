@@ -39,7 +39,8 @@
 <br>
 松下幸之助   日本の実業家。
 <br>
-https://youtu.be/TUD8QdZ1vdk?si=pbNgzfbqJdDtANxZ
+<div class="overlay"></div>
+<div id="yt_player"></div>
 	
 <h1>コメントフォーム</h1>
 <form action="language.php" method="post">
@@ -58,9 +59,77 @@ https://youtu.be/TUD8QdZ1vdk?si=pbNgzfbqJdDtANxZ
 	var lib = new google.translate.TranslateService();lib.translatePage('ja', 'en', function () {});
 }
 </script>
+	
 <script src="https://translate.google.com/translate_a/element.js?cb=gtElInit&amp;hl=ja&amp;client=wt&amp;te=pod"></script>
-<script src="https://www.youtube.com/player_api"></script>
+
 <style type="text/css">
 .mycontent:after{content:"😡";}
+
+.overlay, #yt_player {
+    position: fixed;
+    top: 0;
+    left: 0;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+}
+ 
+.overlay{
+    z-index: -1;
+}
+ 
+#yt_player{
+    z-index: -2;
+}
 </style>
+	
+<script>
+     // YouTube APIの読み込み
+      var tag = document.createElement('script');
+      tag.src = "https://www.youtube.com/iframe_api";
+      var firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+ 
+      //iframe player APIコードを非同期で読み込みます。
+      var player;
+ 
+      function onYouTubeIframeAPIReady() {
+          //動画を埋め込む場所を指定(1.のidを入れる)
+          player = new YT.Player('yt_player', {
+              //YouTUbeの動画IDを入れる
+              videoId: 'z4pWvWYcb_I',
+              //オプションを設定する場所
+              playerVars: {
+                  playsinline: 1,
+                  loop: 1,
+                  listType: 'playlist',
+                  playlist: 'z4pWvWYcb_I', //上と同じ動画ID_リピートするには入力必須
+                  rel: 0, // 関連動画の非表示
+                  controls: 0, // 動画プレーヤーのコントロール非表示
+              },
+ 
+              events: {
+                  'onReady': onPlayerReady,
+                  'onStateChange': onPlayerStateChange
+              }
+          });
+      }
+ 
+      //プレーヤの準備完了後に呼び出す関数
+      function onPlayerReady(event) {
+          event.target.mute(); //ミュートにしないとスマホで再生されない
+          event.target.playVideo(); //ビデオを再生
+      }
+      var done = false;
+ 
+      function onPlayerStateChange(event) {
+          var ytStatus = event.target.getPlayerState();
+          if (ytStatus == YT.PlayerState.ENDED) {
+              event.target.mute(); //ミュートにしないとスマホで再生されない
+              event.target.playVideo(); //ビデオを再生
+          }
+      }
+</script>
+
 </html>
