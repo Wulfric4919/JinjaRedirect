@@ -42,6 +42,12 @@ if ($FORM{'MESG'} ne "") {
     close(OUT) || ErrorExit("書き込み失敗。");
 }
 
+# 二重投稿を抑制する
+if ($FORM{'MESG'} ne "") {
+    print "Location: http://$ENV{'HTTP_HOST'}$ENV{'SCRIPT_NAME'}\n\n";
+    exit(0);
+}
+
 # ファイルの内容を読みこむ
 open(IN, "bbs.txt");
 @body = <IN>;
