@@ -41,3 +41,37 @@ if ($FORM{'MESG'} ne "") {
     print OUT $msg || ErrorExit("書き込み失敗。");
     close(OUT) || ErrorExit("書き込み失敗。");
 }
+
+# ファイルの内容を読みこむ
+open(IN, "bbs.txt");
+@body = <IN>;
+close(IN);
+
+# 結果を書き出す
+print <<END_OF_DATA;
+Content-type: text/html
+
+<html>
+<head>
+<meta http-equiv="Content-type" content="text/html; charset=$charset">
+<title>簡易掲示板</title>
+<style type="text/css">
+<!--
+.name { color: #ff0000; font-weight: bold; }
+.time { color: #666666; }
+.mesg { color: #666600; }
+-->
+</style>
+</head>
+<body>
+<h3>★★ 簡易掲示板 ★★</h3>
+<form method="POST" action="$ENV{'SCRIPT_NAME'}">
+<div>名前：<input type="text" name="NAME"></div>
+<div><textarea name="MESG" cols=40 rows=6></textarea></div>
+<div><input type="submit" value="送信"></div>
+</form>
+@body
+<hr>
+</body>
+</html>
+END_OF_DATA
