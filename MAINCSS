@@ -1,8 +1,12 @@
 var OPT;
 var ua=navigator.userAgent.toLowerCase();var IS_BOT=ua.match(/bot|bing/)?1:0;var IS_SP=window.navigator.userAgent.match(/iphone|android/i)?1:0;var IS_ACTIVE;$(function(){$(document).on("mouseenter",".im",function(e){$(this).css("background","rgba(0,255,200,.1)");});$(document).on("mouseleave",".im",function(e){$(this).css("background","");});$(document).on("click",".im",function(e){e.preventDefault();var text=$(this).text();var imgur=$(this).closest(".body").find("img").attr("src");imgur=imgur.replace(/[^\.]{1}.png/,"l.png");openAIWindow({"prompt":text,"image":imgur,});})})
 $(function(){$("body").on("OEKAKI_FOCUS OEKAKI_CLEAR",function(){if(!$(".ai_timer").is(":visible")){$("#aiPaint").prop("disabled",$('#sketch').sketch().actions.length>-1?"":"true");}});$(document).on("click",".ai_ok",function(e){OEKAKI.redrawHonban();if($(".up_org").is(":checked")){try{$("[name=MESSAGE]:eq(0)").trigger("drop",[{data:$("#sketch_honban").get(0).toDataURL("image/png"),type:"image/png"}]);}catch(error){console.log("ai:"+error);}}
-setTimeout(function(){$('#sketch').sketch().setBaseImageURL($(".ai_image").attr("src"));OEKAKI.redrawHonban();$(".ai_ng").click();},100);});$(document).on("click",".ai_ng",function(e){$(".ai_result").remove();});$(document).on("click",".ai_try",function(e){$(this).prop("disabled",true);$("#aiPaint").click();});$(document).on("click","#aiPaint",function(e){e.preventDefault();if(!$(".node_iframe").length){$("#oekakiCanvas").append("<iframe style='width:1px;height:1px;position:fixed' class=node_iframe src='/lib/ai/'></iframe>");}
-$(this).prop("disabled",true);var len=$('#sketch').sketch().actions.length;$(this).before("<span class='ai_timer'></span><span class=ai_loading><img src=https://image.open2ch.net/image/loading.gif></span")
+setTimeout(function(){$('#sketch').sketch().setBaseImageURL($(".ai_image").attr("src"));
+OEKAKI.redrawHonban();$(".ai_ng").click();},100);});
+$(document).on("click",".ai_ng",function(e){$(".ai_result").remove();});
+$(document).on("click",".ai_try",function(e){$(this).prop("disabled",true);$("#aiPaint").click();});$(document).on("click","#aiPaint",function(e){e.preventDefault();if(!$(".node_iframe").length){$("#oekakiCanvas").append("<iframe style='width:1px;height:1px;position:fixed' class=node_iframe src='/lib/ai/'></iframe>");}
+$(this).prop("disabled",true);
+var len=$('#sketch').sketch().actions.length;$(this).before("<span class='ai_timer'></span><span class=ai_loading><img src=https://image.open2ch.net/image/loading.gif></span")
 AI_request({"prompt":($(".ai_prompt").val()||""),"e":e,"mode":"paint","error":function(){$(".ai_loading").remove();console.log("error");},"done":function(res){$(".ai_result").remove();var json=JSON.parse(res);var div=$("<div style='margin:4px' class=ai_result>"+
 "<div style='padding:4px'>"+
 "<div style='font-size:9pt;color:red'><i class='fas fa-check'></i>AI繧､繝ｩ繧ｹ繝育函謌舌′螳御ｺ�</div>"+
@@ -11,9 +15,32 @@ AI_request({"prompt":($(".ai_prompt").val()||""),"e":e,"mode":"paint","error":fu
 "</div>"+
 "<div><input class=ai_ok type=button value='縺薙ｌ縺ｧ縺奇ｽ�'><label><input checked type=checkbox class=up_org>蜈�ｵｵ繧偵≧�撰ｼ域ｯ碑ｼ�畑��</label></div>"+
 "<div style='position:relative'>"+
-'<div title="繧�ａ繧�" style="box-shadow: 0 2px 2px 2px rgba(0, 0, 0, .2);font-size:12pt;background:rgba(0,0,0,.8);cursor:pointer;color:white;padding:5px 8px;position:absolute;right:0px;top:0px;display:inline-block" class=ai_ng><i class="fas fa-times"></i></div>'+
+'<div title="繧�ａ繧�" style="box-shadow: 0 2px 2px 2px rgba(0, 0, 0, .2);
+font-size:12pt;
+background:rgba(0,0,0,.8);
+cursor:pointer;
+color:white;
+padding:5px 8px;
+position:absolute;
+right:0px;
+top:0px;
+display:inline-block" class=ai_ng><i class="fas fa-times"></i></div>'+
 "<img class=ai_image src="+json.data+"></div>"+
-"</div>");$('#sketch').before(div);$(".ai_loading").remove();var limit=json.wait;var sec=0;var timer=setInterval(function(){console.log("timer");if(++sec>=limit){$("#aiPaint,.ai_try,.ai_prompt").prop("disabled","");$(".ai_timer").remove();$(".ai_error").remove();clearInterval(timer);}else{$(".ai_timer").html(sec+"/"+limit+"</font>");}},1000);}});})});$(function(){$(document).on("click","#aiButton",function(e){e.preventDefault();openAIWindow({});})})
+"</div>");
+$('#sketch').before(div);
+$(".ai_loading").remove();
+var limit=json.wait;
+var sec=0;
+var timer=setInterval(function(){console.log("timer");
+if(++sec>=limit){$("#aiPaint,.ai_try,.ai_prompt").prop("disabled","");
+$(".ai_timer").remove();
+$(".ai_error").remove();
+clearInterval(timer);
+}else{$(".ai_timer").html(sec+"/"+limit+"</font>");
+}},1000);
+}});
+})});
+$(function(){$(document).on("click","#aiButton",function(e){e.preventDefault();openAIWindow({});})})
 function openAIWindow(param){var overwrapHTML="<div class='overwrap' style='z-index:1000;text-align:center;vertical-align:middle;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.2); display: flex; align-items: center; flex-flow: wrap; justify-content: space-around;'><iframe class=node_iframe src='/lib/ai/' style='width:1px;height:1px;position:fixed'></iframe></div>";$(".info_div").html("");var overwrap=$(overwrapHTML);var ank=$("<div class='ai_win' style='display: flex; align-items: center; flex-flow: wrap; justify-content: space-around;position:relative'>"+
 "<form method=POST class=aiFormValue>"+
 "<div style='display:inline-block;
@@ -1027,41 +1054,85 @@ if($(html_obj).find(".is_nusi").length){if($(html_obj).find(".set_fix").length){
 if($(html_obj).find(".reset_fix").length){reset_fix();}
 if($(html_obj).find(".open_voicha").length){show_radio()}else if($(html_obj).find(".open_voicha_1").length){show_radio("1")}}
 icon_filter($(html_obj));twitter_handler($(html_obj));nico_handler($(html_obj));url_info_handler($(html_obj));AA_filter($(html_obj));table_filter($(html_obj));if($(html_obj).find(".viewon").length){$(html_obj).find(".viewon").on("inview",function(e,isInView){if(isInView){$(this).attr("src",$(this).attr("_src"));}else{$(this).attr("src","");}
-check_ad_block($(this));})}
-obj.process(html_obj)});if(html.match(/imgurpic/)){$(".imgurpic").each(function(){var org=$(this).attr("data-src");$(this).attr("src",org).removeClass("imgurpic");})}
-if(html.match(/youtubeiframe/)){$(".youtubeiframe").each(function(){var org=$(this).attr("data-src");var param=$(this).attr("param");var embed="https://www.youtube.com/embed/"+org+(param?"?"+param:"");$(this).attr("src",embed).removeClass("youtubeiframe");})}
-if(html.match(/openpic/)){$(".openpic").after("<div class=grid><img src=https://image.open2ch.net/image/icon/svg/loading.v2.svg width=100 height=100></div>");setTimeout(function(){$(".grid").fadeOut("fast",function(){$(this).remove();$(".openpic").addClass("pic lazy").fadeIn("fast",function(){$(".openpic").attr("src",$(".openpic").attr("data-src"));$(this).removeClass("openpic");});});},(isSmartPhone?5000:3000));}
-$(".thread").find(".hide").not("[ignored=1],.ng_hide").fadeIn("fast");if($("#auto_scroll").is(":checked")){moveToMiddle($(".thread dl:last"),500);}
-document.title=defTitle;$("body").trigger("UPDATE_NEWRES",[html]);$.map(upated_resnums,function(resnum){update_ID_Counter(resnum);})
-if("done"in obj){obj.done();}}
+check_ad_block($(this));
+})}
+obj.process(html_obj)});
+if(html.match(/imgurpic/)){$(".imgurpic").each(function(){var org=$(this).attr("data-src");$(this).attr("src",org).removeClass("imgurpic");})}
+if(html.match(/youtubeiframe/)){$(".youtubeiframe").each(function(){var org=$(this).attr("data-src");
+var param=$(this).attr("param");
+var embed="https://www.youtube.com/embed/"+org+(param?"?"+param:"");
+$(this).attr("src",embed).removeClass("youtubeiframe");})}
+if(html.match(/openpic/)){$(".openpic").after("<div class=grid><img src=https://image.open2ch.net/image/icon/svg/loading.v2.svg width=100 height=100></div>");
+setTimeout(function(){$(".grid").fadeOut("fast",function(){$(this).remove();
+$(".openpic").addClass("pic lazy").fadeIn("fast",function(){$(".openpic").attr("src",$(".openpic").attr("data-src"));$(this).removeClass("openpic");});});},(isSmartPhone?5000:3000));}
+$(".thread").find(".hide").not("[ignored=1],.ng_hide").fadeIn("fast");
+if($("#auto_scroll").is(":checked")){moveToMiddle($(".thread dl:last"),500);}
+document.title=defTitle;$("body").trigger("UPDATE_NEWRES",[html]);
+$.map(upated_resnums,function(resnum){update_ID_Counter(resnum);})
+if("done"in obj){obj.done();
+}}
 $(function(){$(document).on("click",".grid",function(){e.preventDefault();e.stopPropagation();return false;})})
 function call_update_alert(_server_resnum){is_update_que=1;server_resnum=_server_resnum;var diff=server_resnum-local_resnum;if(diff>0){if(!$("#new_alert_hide").is(":checked")){$('#new_alert').fadeIn('fast');}
-$('#now_max').html(diff);document.title="(+"+diff+")"+defTitle;if(!$('#noSoundAlert').is(':checked')){if(IS_ACTIVE&&isSmartPhone=="0"){soundManager.play('res');}}
+$('#now_max').html(diff);
+document.title="(+"+diff+")"+defTitle;
+if(!$('#noSoundAlert').is(':checked')){if(IS_ACTIVE&&isSmartPhone=="0"){soundManager.play('res');}}
 if($('#autoOpen').is(':checked')||submit_flag==1){update_res();}else{$("#get_newres_button").val("譁ｰ逹繝ｬ繧ｹ繧定｡ｨ遉ｺ縺吶ｋ("+diff+"莉ｶ)").fadeIn("fast");}
 if($('#alertRes').is(':checked')){$.alert("笳�♀遏･繧峨○笳�\n譁ｰ隕上Ξ繧ｹ縺�"+diff+"莉ｶ縺､縺�◆繧茨ｼ�");}}}
-var socket;var sockID;function setSureConter(count){var preNinzu=parseInt($(".sureNinzu").prop("count"));var diff=count-preNinzu;if(preNinzu>0){if(diff!==0){var diff_div=$("<div>"+(diff>0?"+":"")+diff+"</div>");var is_up=diff>0?1:0;var icon;var happy=['<i class="far fa-grin-tears"></i>','<i class="far fa-grin-tongue"></i>','<i class="far fa-kiss-wink-heart"></i>','<i class="far fa-grin"></i>','<i class="far fa-grin-beam"></i>','<i class="far fa-grin-hearts"></i>','<i class="far fa-grin-tongue-squint"></i>','<i class="far fa-grin-tongue-wink"></i>','<i class="far fa-kiss"></i>','<i class="far fa-laugh"></i>','<i class="far fa-laugh-beam"></i>','<i class="far fa-smile"></i>','<i class="far fa-smile-beam"></i>','<i class="far fa-smile-wink"></i>','<i class="far fa-grin-alt"></i>','<i class="far fa-grin-squint"></i>','<i class="far fa-grin-wink"></i>','<i class="far fa-laugh-squint"></i>','<i class="far fa-laugh-wink"></i>','<i class="far fa-grin-squint-tears"></i>','<i class="far fa-grin-stars"></i>'];var cry=['<i class="far fa-dizzy"></i>','<i class="far fa-sad-cry"></i>','<i class="far fa-flushed"></i>','<i class="far fa-sad-tear"></i>','<i class="far fa-tired"></i>','<i class="far fa-grimace"></i>','<i class="far fa-frown"></i>','<i class="far fa-frown-open"></i>','<i class="far fa-meh-rolling-eyes"></i>','<i class="far fa-angry"></i>','<i class="far fa-surprise"></i>'];if(is_up==1){icon=happy[parseInt(Math.random()*happy.length)];}else{icon=cry[parseInt(Math.random()*cry.length)];}
-$(".lbox_face").html(icon).stop().animate({n:1},{duration:5000,complete:function(){$(this).html('<i class="far fa-meh"></i>');}});$(diff_div).css({"opacity":".8","position":"absolute","top":"-2px","right":"10px","color":(is_up?"red":"blue")});$(diff_div).addClass("ldiff").hide();$(".ninzuDiff").append(diff_div);$(diff_div).fadeIn("fast",function(){$(this).animate({hoge:1},{duration:2000,complete:function(){$(this).fadeOut("fast",function(){$(this).remove()});}})});}}
+var socket;var sockID;
+function setSureConter(count){var preNinzu=parseInt($(".sureNinzu").prop("count"));var diff=count-preNinzu;if(preNinzu>0){if(diff!==0){var diff_div=$("<div>"+(diff>0?"+":"")+diff+"</div>");var is_up=diff>0?1:0;var icon;var happy=['<i class="far fa-grin-tears"></i>','<i class="far fa-grin-tongue"></i>','<i class="far fa-kiss-wink-heart"></i>','<i class="far fa-grin"></i>','<i class="far fa-grin-beam"></i>','<i class="far fa-grin-hearts"></i>','<i class="far fa-grin-tongue-squint"></i>','<i class="far fa-grin-tongue-wink"></i>','<i class="far fa-kiss"></i>','<i class="far fa-laugh"></i>','<i class="far fa-laugh-beam"></i>','<i class="far fa-smile"></i>','<i class="far fa-smile-beam"></i>','<i class="far fa-smile-wink"></i>','<i class="far fa-grin-alt"></i>','<i class="far fa-grin-squint"></i>','<i class="far fa-grin-wink"></i>','<i class="far fa-laugh-squint"></i>','<i class="far fa-laugh-wink"></i>','<i class="far fa-grin-squint-tears"></i>','<i class="far fa-grin-stars"></i>'];var cry=['<i class="far fa-dizzy"></i>','<i class="far fa-sad-cry"></i>','<i class="far fa-flushed"></i>','<i class="far fa-sad-tear"></i>','<i class="far fa-tired"></i>','<i class="far fa-grimace"></i>','<i class="far fa-frown"></i>','<i class="far fa-frown-open"></i>','<i class="far fa-meh-rolling-eyes"></i>','<i class="far fa-angry"></i>','<i class="far fa-surprise"></i>'];if(is_up==1){icon=happy[parseInt(Math.random()*happy.length)];}else{icon=cry[parseInt(Math.random()*cry.length)];}
+$(".lbox_face").html(icon).stop().animate({n:1},{duration:5000,complete:function(){$(this).html('<i class="far fa-meh"></i>');}});
+$(diff_div).css({"opacity":".8","position":"absolute","top":"-2px","right":"10px","color":(is_up?"red":"blue")});
+$(diff_div).addClass("ldiff").hide();
+$(".ninzuDiff").append(diff_div);
+$(diff_div).fadeIn("fast",function(){$(this).animate({hoge:1},{duration:2000,complete:function(){$(this).fadeOut("fast",function(){$(this).remove()});}})});}}
 $(".sureNinzu").prop("count",count)
 if(diff!==0){$(".sureNinzu").fadeOut("fast",function(){$(this).html(count).fadeIn("fast")})}else{$(".sureNinzu").html(count);}
-if(!$(".lbox").is(":visible")){$(".lbox").fadeIn("fast");}}
+if(!$(".lbox").is(":visible")){$(".lbox").fadeIn("fast");
+}}
 function setSureTotalConter(count){var preCount=parseInt($(".sureTotal").prop("count"));var diff=count-preCount;if(preCount>0){if(diff!==0){var diff_div=$("<div>"+(diff>0?"+":"")+diff+"</div>");$(diff_div).css({"position":"absolute","top":"-2px","right":"6px","color":(diff>0?"red":"blue")});$(diff_div).addClass("ldiff").hide();$(".pvDiff").append(diff_div);diff_div.fadeIn("fast",function(){$(this).animate({hoge:1},{duration:2000,complete:function(){$(this).fadeOut("fast",function(){$(this).remove()});}})});}}
 $(".sureTotal").prop("count",count)
 if(diff){$(".sureTotal").prop("count",count).fadeOut("fast",function(){$(this).html(count).fadeIn("fast");})}else{$(".sureTotal").html(count);}}
-$(function(){$(document).on("click","#retry_button",function(e){socket.socket.reconnect();$(this).attr("disabled",true);setTimeout(function(){if(onConnect_nodejs==0){$.alert("謗･邯壹〒縺阪∪縺帙ｓ縲よ凾髢薙ｒ遨ｺ縺代※縺九ｉ蜀榊ｺｦ縺溘ａ縺励※縺ｿ縺ｦ縺上□縺輔＞縲�");$("#retry_button").removeAttr("disabled");}},3000);});});var retry=0;var onConnect_nodejs=0;var max_socket_reconnects=6;function nodejs_connect(){"use strict";socket=io.connect(NODEJS,{'max reconnection attempts':max_socket_reconnects});socket.on("reconnecting",function(delay,attempt){if(attempt===max_socket_reconnects){setTimeout(function(){socket.socket.reconnect();},5000);return console.log("Failed to reconnect. Lets try that again in 5 seconds.");}});socket.on('error',function(reason){socket.disconnect();io.sockets=[];console.log("error! cannot connect.");});socket.on('disconnect',function(){onConnect_nodejs=0;setTimeout(function(){if($("#disconnect").is(":visible")==0&&onConnect_nodejs==0){$("body").append("<div id='disconnect' align=center></div>");socket.socket.reconnect();}},1000);});socket.on('connect',function(){onConnect_nodejs=1;if($("#disconnect").is(":visible")==1){$("#disconnect").remove();$("body").append("<div id='connected' align=center>"+
+$(function(){$(document).on("click","#retry_button",function(e){socket.socket.reconnect();$(this).attr("disabled",true);setTimeout(function(){if(onConnect_nodejs==0){$.alert("謗･邯壹〒縺阪∪縺帙ｓ縲よ凾髢薙ｒ遨ｺ縺代※縺九ｉ蜀榊ｺｦ縺溘ａ縺励※縺ｿ縺ｦ縺上□縺輔＞縲�");$("#retry_button").removeAttr("disabled");}},3000);});
+});
+var retry=0;
+var onConnect_nodejs=0;
+var max_socket_reconnects=6;
+function nodejs_connect(){"use strict";
+socket=io.connect(NODEJS,{'max reconnection attempts':max_socket_reconnects});
+socket.on("reconnecting",function(delay,attempt){if(attempt===max_socket_reconnects){setTimeout(function(){socket.socket.reconnect();},5000);
+return console.log("Failed to reconnect. Lets try that again in 5 seconds.");}});
+socket.on('error',function(reason){socket.disconnect();
+io.sockets=[];
+console.log("error! cannot connect.");});
+socket.on('disconnect',function(){onConnect_nodejs=0;
+setTimeout(function(){if($("#disconnect").is(":visible")==0&&onConnect_nodejs==0){$("body").append("<div id='disconnect' align=center></div>");
+socket.socket.reconnect();}},1000);});
+socket.on('connect',function(){onConnect_nodejs=1;
+if($("#disconnect").is(":visible")==1){$("#disconnect").remove();
+$("body").append("<div id='connected' align=center>"+
 "<font color=green>蜀肴磁邯壽�蜉溘り�蜍墓峩譁ｰ繧貞�髢九＠縺溘ｈ��</font>"+
-"</div>");$("#connected").css({"z-index":"1000","border-bottom":"1px solid #cceecc","fontSize":"9pt","padding":"5px","background":"#eeffee","position":"fixed","width":"100%","top":"0px","left":"0px"});setTimeout(function(){$("#connected").slideUp("fast",function(){$(this).remove()});},2000);}
-socket.emit('set',bbs,bbskey,local_resnum,getCookie("a"));});socket.on('u',function(_server_resnum){call_update_alert(_server_resnum);});socket.on('stc',function(count){setSureTotalConter(count);});socket.on('sc',function(count){setSureConter(count);});socket.on('max',function(count){$(".maxNinzu").html(count);});socket.on('c',function(res){if(res["p"]){setSureTotalConter(res["p"]);}
+"</div>");
+$("#connected").css({"z-index":"1000","border-bottom":"1px solid #cceecc","fontSize":"9pt","padding":"5px","background":"#eeffee","position":"fixed","width":"100%","top":"0px","left":"0px"});setTimeout(function(){$("#connected").slideUp("fast",function(){$(this).remove()});},2000);}
+socket.emit('set',bbs,bbskey,local_resnum,getCookie("a"));});
+socket.on('u',function(_server_resnum){call_update_alert(_server_resnum);});socket.on('stc',function(count){setSureTotalConter(count);});socket.on('sc',function(count){setSureConter(count);});socket.on('max',function(count){$(".maxNinzu").html(count);});socket.on('c',function(res){if(res["p"]){setSureTotalConter(res["p"]);}
 if(res["n"]){setSureConter(res["n"]);}
 if(res["k"]){updateKusa(res["k"]);}
-if(res["m"]){$(".maxNinzu").html(res["m"]);}});socket.on('nama',function(status){$("body").trigger("nama_publish",status);});socket.on('nm',function(status){$("body").trigger("is_nama_onair");});socket.on('au',function(_from,_to){var ankaListHTML=$(".AnkaList").html();var ankaLists=ankaListHTML?ankaListHTML.split("縲�"):[];var url="/test/read.cgi/"+bbs+"/"+bbskey+"/"+_from;var ank='<span><a class="_ank closeOther vw ankbold" href="'+url+'" url="'+url+'">'+_from+'</a></span>';if(ankaLists.length>20){ankaLists.length=20;}
-ankaLists.unshift(ank);if($("#useAnka").is(":checked")){$("[res="+_from+"]").parent().find(".body").contents().wrapAll("<span class=ankaFrom />");$("[res="+_to+"]").parent().find(".body").contents().wrapAll("<span class=ankaTo />");if($(".ankaview_div").is(":visible")==false||$(".ankaview").is(":visible")==false){$(".ankaview").hide();$(".ankaview_div").show();$("AnkaNum").text(parseInt($("AnkaNum").text())+1);$(".AnkaList").html(ankaLists.join("縲�"));;$(".ankaview").slideDown("fast")}else{$(".ankaShake").fadeOut(500,function(){$("AnkaNum").text(parseInt($("AnkaNum").text())+1);$(".AnkaList").html(ankaLists.join("縲�"));;$(this).fadeIn("fast");});}}else{$("AnkaNum").text(parseInt($("AnkaNum").text())+1);$(".AnkaList").html(ankaLists.join("縲�"));;}
+if(res["m"]){$(".maxNinzu").html(res["m"]);}});
+socket.on('nama',function(status){$("body").trigger("nama_publish",status);});socket.on('nm',function(status){$("body").trigger("is_nama_onair");});socket.on('au',function(_from,_to){var ankaListHTML=$(".AnkaList").html();var ankaLists=ankaListHTML?ankaListHTML.split("縲�"):[];var url="/test/read.cgi/"+bbs+"/"+bbskey+"/"+_from;var ank='<span><a class="_ank closeOther vw ankbold" href="'+url+'" url="'+url+'">'+_from+'</a></span>';if(ankaLists.length>20){ankaLists.length=20;}
+ankaLists.unshift(ank);
+if($("#useAnka").is(":checked")){$("[res="+_from+"]").parent().find(".body").contents().wrapAll("<span class=ankaFrom />");$("[res="+_to+"]").parent().find(".body").contents().wrapAll("<span class=ankaTo />");if($(".ankaview_div").is(":visible")==false||$(".ankaview").is(":visible")==false){$(".ankaview").hide();$(".ankaview_div").show();$("AnkaNum").text(parseInt($("AnkaNum").text())+1);$(".AnkaList").html(ankaLists.join("縲�"));;$(".ankaview").slideDown("fast")}else{$(".ankaShake").fadeOut(500,function(){$("AnkaNum").text(parseInt($("AnkaNum").text())+1);$(".AnkaList").html(ankaLists.join("縲�"));;$(this).fadeIn("fast");});}}else{$("AnkaNum").text(parseInt($("AnkaNum").text())+1);$(".AnkaList").html(ankaLists.join("縲�"));;}
 if(IS_ACTIVE&&!$('#noSoundAlert').is(':checked')&&$("#useAnka").is(":checked")){if(isSmartPhone=="0"){soundManager.play('anka');}}});socket.on('ru',function(data){socket_update_ratings(data);});socket.on('rv',function(data){socket_update_ratings_value(data);});socket.on('sk',function(count){updateKusa(count);});socket.on('call',function(param){if(param.type=="hsb"){if($(".high").is(":visible")&&targetLine==param.value){$(".reload_score").trigger("click");}}});socket.on('yakiu',function(res){var num=parseInt(res.num)+1;if($(".score").is(":visible")&&targetLine==num){$(".reload_score").trigger("click");}});}
 function nodejs_pushKusa(){socket.emit('sk',bbs,bbskey);}
 function nodejs_set_resnum(_local_resnum){socket.emit('sr',_local_resnum);}
-var twitterCheckTimerID;$(function(){twitterInit();});function twitterInit(){$(document).on("click","#twsync",function(e){setCookie("twsync",$(this).attr("checked")?1:0);});$(document).on("click","#twid",function(e){setCookie("twid",$(this).attr("checked")?1:0);});if(getCookie("tw")&&getCookie("twfunc")==1){$("#twfunc").attr("checked",true);loadTwitterUserInfo({"noanime":true},function(){var twkeys=["twsync","twid","twicon"];for(var i in twkeys){var key=twkeys[i];if(getCookie(key)==1){$("#"+key).attr("checked",true);}};});}
+var twitterCheckTimerID;$(function(){twitterInit();});
+function twitterInit(){$(document).on("click","#twsync",function(e){setCookie("twsync",$(this).attr("checked")?1:0);});
+$(document).on("click","#twid",function(e){setCookie("twid",$(this).attr("checked")?1:0);});if(getCookie("tw")&&getCookie("twfunc")==1){$("#twfunc").attr("checked",true);loadTwitterUserInfo({"noanime":true},function(){var twkeys=["twsync","twid","twicon"];for(var i in twkeys){var key=twkeys[i];if(getCookie(key)==1){$("#"+key).attr("checked",true);}};});}
 $(document).on("click","#twitter_logout",function(e){$.ajax({type:"POST",url:'/auth/twitter_logout.cgi',success:function(res){$("#twfunc").removeAttr("logined");$("#twfunc").attr("checked",false);twInfoClose(true);}});return false;});$("#twfunc").click(function(){if($(this).prop("checked")==true){if($(this).attr("logined")!="true"){if(getCookie("tw")){loadTwitterUserInfo();}else{window.open("https://open2ch.net/auth/twitter_login.cgi","miniwin","width=600,height=400");$(this).attr("checked",false);if(twitterCheckTimerID){clearInterval(twitterCheckTimerID);}
 twitterCheckTimerID=setInterval(twitterLoginChecker,1000);}}else{$("#twinfo").slideDown();}}else{twInfoClose();}});}
-function loadTwitterUserInfo(obj,callback){$.ajax({type:"POST",dataType:"json",url:'/ajax/twitter/get_info.cgi',success:function(data){var url="https://twitter.com/"+data.screen_name;setCookie("twfunc",1);$("#twfunc").attr("logined","true");var icon="<a href="+url+">"+"<img boredr=0 width=14 height=14 src="+data.profile_image_url+">@"+data.screen_name+"</a>";$("#twinfo").append("<div class=twview>"+
+function loadTwitterUserInfo(obj,callback){$.ajax({type:"POST",dataType:"json",url:'/ajax/twitter/get_info.cgi',success:function(data){var url="https://twitter.com/"+data.screen_name;
+setCookie("twfunc",1);
+$("#twfunc").attr("logined","true");
+var icon="<a href="+url+">"+"<img boredr=0 width=14 height=14 src="+data.profile_image_url+">@"+data.screen_name+"</a>";$("#twinfo").append("<div class=twview>"+
 "<div style='margin-bottom:3px'>"+
 "TwitterID:&nbsp;"+icon+
 "<div style='padding:3px;float:right'><a href=# id=twitter_logout>Twitter騾｣謳ｺ繧定ｧ｣髯､縺吶ｋ</a></div>"+
